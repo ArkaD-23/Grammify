@@ -9,7 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@copilotkit/react-core": "^1.4.7",
+    "@copilotkit/react-ui": "^1.4.7",
+    "@copilotkit/runtime": "^1.4.7",
+    "dotenv": "^16.4.7",
     "next": "15.1.3",
+    "openai": "^4.77.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
