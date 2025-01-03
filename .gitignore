@@ -1,0 +1,71 @@
+# .gitignore for Next.js (Client Folder) and Poetry (Python Agent Folder)
+
+# Ignore node_modules
+client/node_modules/
+
+# Ignore build output
+client/.next/
+client/out/
+
+# Ignore local environment files
+client/.env.local
+client/.env.development.local
+client/.env.test.local
+client/.env.production.local
+
+# Logs
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+
+# Editor directories and files
+client/.idea/
+client/.vscode/
+client/*.suo
+client/*.ntvs*
+client/*.njsproj
+client/*.sln
+client/.DS_Store
+
+# Ignore Python compiled files
+agent/__pycache__/
+agent/*.py[cod]
+agent/*.pyo
+agent/*$py.class
+
+# Poetry-specific files
+agent/poetry.lock
+
+# Ignore virtual environments
+agent/.venv/
+agent/venv/
+
+# Ignore environment files
+agent/.env
+agent/.env.*
+
+# Logs and cache files
+agent/logs/
+agent/*.log
+agent/.coverage
+agent/.pytest_cache/
+agent/.mypy_cache/
+agent/.pdm.toml
+agent/.pdm-python
+
+# Ignore Jupyter notebook checkpoints
+agent/.ipynb_checkpoints/
+
+# Ignore system files
+*.swp
+*.swo
+*.bak
+Thumbs.db
+Desktop.ini
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Windows system files
+ehthumbs.db
+Icon?
