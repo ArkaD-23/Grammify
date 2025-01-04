@@ -1,9 +1,10 @@
 {
-  "python_version": "3.12",
-  "dockerfile_lines": [],
-  "dependencies": ["."],
-  "graphs": {
-    "research_agent": "./research_canvas/agent.py:graph"
-  },
-  "env": ".env"
-}
+    "python_version": "3.12",
+    "dockerfile_lines": [],
+    "dependencies": ["."],
+    "graphs": {
+      "grammar_checker_agent": "./agent/agent.py:graph"
+    },
+    "env": ".env"
+  }
+  
