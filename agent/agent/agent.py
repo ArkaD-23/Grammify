@@ -1,34 +1,34 @@
-from langchain.chains import LLMChain
-from langchain.prompts import PromptTemplate
-from langchain.llms import OpenAI
-from flask import Flask, request, jsonify
-from dotenv import load_dotenv
-import os
+from langgraph.graph import StateGraph
+from langgraph.checkpoint.memory import MemorySaver
+from research_canvas.state import AgentState
+from backend.nodes.download_node import download_node
+from backend.nodes.grammar_check_node import grammar_check_node
+from backend.nodes.copy_result_node import copy_result_node
 
-# Load environment variables
-load_dotenv()
+# Define the workflow graph
+workflow = StateGraph(AgentState)
 
-app = Flask(__name__)
+# Add the nodes to the workflow graph
+workflow.add_node("download", download_node)
+workflow.add_node("grammar_check", grammar_check_node)
+workflow.add_node("copy_result", copy_result_node)
 
-def grammar_checker_chain():
-    prompt = PromptTemplate(
-        input_variables=["text"],
-        template="You are a grammar correction assistant. Fix the grammar errors in the following text:\n\n{text}\n\nCorrected text:",
-    )
-    llm = OpenAI(model="gpt-4", temperature=0, openai_api_key=os.getenv("OPENAI_API_KEY"))
-    chain = LLMChain(llm=llm, prompt=prompt)
-    return chain
+# Set the entry point and define edges (workflow)
+workflow.set_entry_point("download")
+workflow.add_edge("download", "grammar_check")
+workflow.add_edge("grammar_check", "copy_result")
 
-@app.route("/check-grammar", methods=["POST"])
-def check_grammar():
-    data = request.json
-    if not data or "text" not in data:
-        return jsonify({"error": "Invalid request"}), 400
+# Compile the workflow with memory saver (to track state)
+memory = MemorySaver()
+graph = workflow.compile(checkpointer=memory, interrupt_after=["copy_result"])
 
-    chain = grammar_checker_chain()
-    corrected_text = chain.run({"text": data["text"]})
-
-    return jsonify({"corrected_text": corrected_text}), 200
+async def run_workflow():
+    # Simulate agent state
+    state = AgentState()
+    
+    # Execute the graph
+    await graph.run(state)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    import asyncio
+    asyncio.run(run_workflow())
