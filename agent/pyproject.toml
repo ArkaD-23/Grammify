@@ -9,6 +9,12 @@ readme = "README.md"
 python = "^3.12"
 langchain = "^0.3.14"
 langgraph = "^0.2.60"
+fastapi = "^0.115.6"
+uvicorn = "^0.34.0"
+python-dotenv = "^1.0.1"
+transformers = "^4.47.1"
+googletrans = "^4.0.2"
+gtts = "^2.5.4"
 
 
 [build-system]
