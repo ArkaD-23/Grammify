@@ -1,14 +1,15 @@
+"use client";
 import { useState, useRef, useEffect } from "react";
-import { PaperAirplaneIcon, CogIcon } from "@heroicons/react/solid";
+import { IoMdSend } from "react-icons/io";
+import { MdSettings } from "react-icons/md";
 
-const ChatPage = () => {
+const Home = () => {
   const [messages, setMessages] = useState([
     { id: 1, text: "Hello! How can I help you?", sender: "bot" },
   ]);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
 
-  // Scroll to the bottom of the messages
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -17,7 +18,6 @@ const ChatPage = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Handle sending messages
   const handleSend = (e) => {
     e.preventDefault();
     if (input.trim() === "") return;
@@ -26,7 +26,6 @@ const ChatPage = () => {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
-    // Simulate bot response
     setTimeout(() => {
       const botMessage = {
         id: Date.now() + 1,
@@ -38,18 +37,14 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <div className="w-full max-w-md h-full flex flex-col bg-white shadow-lg">
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-2 bg-blue-600 text-white shadow">
+    <div className="h-screen bg-gray-600 flex flex-col items-center justify-center">
+      <div className="w-full max-w-md h-full flex flex-col bg-gray-800 shadow-lg"><div className="flex items-center justify-between px-4 py-2 bg-gray-700 text-white shadow">
           <h1 className="text-lg font-semibold">Chat Application</h1>
-          <button className="p-2 rounded-full hover:bg-blue-500">
-            <CogIcon className="h-6 w-6" />
+          <button className="p-2 rounded-full hover:bg-gray-600">
+            <MdSettings className="h-6 w-6 text-white" />
           </button>
         </div>
-
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-4 py-2 bg-gray-50">
+        <div className="flex-1 overflow-y-auto px-4 py-2 bg-gray-900">
           {messages.map((msg) => (
             <div
               key={msg.id}
@@ -61,7 +56,7 @@ const ChatPage = () => {
                 className={`px-4 py-2 rounded-lg ${
                   msg.sender === "user"
                     ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-black"
+                    : "bg-gray-700 text-white"
                 }`}
               >
                 {msg.text}
@@ -70,24 +65,22 @@ const ChatPage = () => {
           ))}
           <div ref={messagesEndRef} />
         </div>
-
-        {/* Input */}
         <form
           onSubmit={handleSend}
-          className="flex items-center px-4 py-2 bg-white border-t border-gray-200"
+          className="flex items-center px-4 py-2 bg-gray-800 border-t border-gray-700"
         >
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
-            className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             type="submit"
             className="ml-2 p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700"
           >
-            <PaperAirplaneIcon className="h-5 w-5" />
+            <IoMdSend className="h-5 w-5" />
           </button>
         </form>
       </div>
@@ -95,4 +88,4 @@ const ChatPage = () => {
   );
 };
 
-export default ChatPage;
+export default Home;
