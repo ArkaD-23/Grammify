@@ -1,51 +1,39 @@
-import {
-    CopilotRuntime,
-    OpenAIAdapter,
-    copilotRuntimeNextJSAppRouterEndpoint,
-    langGraphPlatformEndpoint, 
-    copilotKitEndpoint,
-  } from "@copilotkit/runtime";
-  import OpenAI from "openai";
+import OpenAI from "openai";
+import { NextResponse } from "next/server";
 
-  const openai = new OpenAI({
-    baseURL: "https://models.inference.ai.azure.com",
-    apiKey: process.env.OPENAI_API_KEY
-  })
-  const llmAdapter = new OpenAIAdapter({ openai });
-  const langsmithApiKey = process.env.LANGSMITH_API_KEY;
-  
-  export const POST = async (req) => {
-    const searchParams = req.nextUrl.searchParams;
-    const deploymentUrl = searchParams.get('lgcDeploymentUrl') || process.env.LGC_DEPLOYMENT_URL;
-  
-    const remoteEndpoint = deploymentUrl ? langGraphPlatformEndpoint({
-      deploymentUrl,
-      langsmithApiKey,
-      agents: [
-        {
-          name: "research_agent",
-          description: "Research agent",
-        },
-        {
-          name: "research_agent_google_genai",
-          description: "Research agent",
-          assistantId: "9dc0ca3b-1aa6-547d-93f0-e21597d2011c",
-        },
+const openai = new OpenAI({
+  baseURL: "https://models.inference.ai.azure.com",
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+export const POST = async (req) => {
+  try {
+    const { input } = await req.json();
+
+    //console.log("Received input:", input); 
+    const openaiResponse = await openai.chat.completions.create({
+      messages: [
+        { role: "system", content: "" },
+        { role: "user", content: input || "What is the capital of France?" },
       ],
-    }) : copilotKitEndpoint({
-      url: process.env.REMOTE_ACTION_URL || "http://localhost:8000/copilotkit",
+      model: "gpt-4o", 
+      temperature: 1,
+      max_tokens: 4096,
+      top_p: 1,
     });
-  
-    const runtime = new CopilotRuntime({
-      remoteEndpoints: [remoteEndpoint],
-    });
-  
-    const { handleRequest } = copilotRuntimeNextJSAppRouterEndpoint({
-      runtime,
-      serviceAdapter: llmAdapter,
-      endpoint: "/api/copilotkit",
-    });
-  
-    return handleRequest(req);
-  };
-  
+    const openaiReply = openaiResponse.choices[0]?.message?.content || "No response from OpenAI.";
+
+    //console.log("Response from OpenAI:", openaiReply); 
+    return new NextResponse(
+      JSON.stringify({ reply: openaiReply }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
+  } catch (error) {
+    console.error("Error handling request:", error.message || error); 
+
+    return new NextResponse(
+      JSON.stringify({ reply: "An error occurred. Please try again later." }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
+  }
+};
