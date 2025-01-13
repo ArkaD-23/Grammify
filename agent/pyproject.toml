@@ -1,9 +1,10 @@
 [tool.poetry]
-name = "agent"
+name = "language-agent"
 version = "0.1.0"
 description = ""
 authors = ["Arkaprava Dhar <raj2003dhar@gmail.com>"]
-readme = "README.md"
+
+package-mode = false  # Disable package mode
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -16,7 +17,23 @@ transformers = "^4.47.1"
 googletrans = "^4.0.2"
 gtts = "^2.5.4"
 requests = "^2.32.3"
+pydantic = "^2.10.5"
 
+[project]
+name = "language-agent"
+version = "0.1.0"
+dependencies = [
+    "langchain",
+    "langgraph",
+    "fastapi",
+    "uvicorn",
+    "python-dotenv",
+    "transformers",
+    "googletrans",
+    "gtts",
+    "requests",
+    "pydantic",
+]
 
 [build-system]
 requires = ["poetry-core"]

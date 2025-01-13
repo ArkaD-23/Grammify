@@ -1,7 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from agent.agent.agent import LanguageTutoringAgent
-from agent.agent.open_ai_client import OpenAIClient
+from my_agent import LanguageTutoringAgent
+from open_ai_client import OpenAIClient
+from dotenv import load_dotenv
+
+load_dotenv() 
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 app = FastAPI(
     title="Language Tutoring Agent",
@@ -9,13 +13,11 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Initialize OpenAI client
 openai_client = OpenAIClient(
     base_url="https://models.inference.ai.azure.com",
-    api_key="your-openai-api-key"
+    api_key=OPENAI_API_KEY,
 )
 
-# Initialize the tutoring agent
 language_agent = LanguageTutoringAgent(openai_client=openai_client)
 
 class UserInput(BaseModel):
