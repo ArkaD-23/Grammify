@@ -1,7 +1,8 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+import os
+from fastapi import FastAPI, HTTPException 
+from pydantic import BaseModel 
 from my_agent import LanguageTutoringAgent
-from open_ai_client import OpenAIClient
+from openai_client import OpenAIClient 
 from dotenv import load_dotenv
 
 load_dotenv() 

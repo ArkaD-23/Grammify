@@ -1,5 +1,5 @@
-from langgraph import LangGraph
-from langgraph.schema import Node
+from langgraph import LangGraph 
+from langgraph import Node 
 
 class LanguageTutoringAgent:
     def __init__(self, openai_client):
