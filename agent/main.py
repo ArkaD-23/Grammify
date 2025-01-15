@@ -21,6 +21,15 @@ sdk = CopilotKitSDK(
 )
 add_fastapi_endpoint(app, sdk, "/copilotkit")
 
+@app.post("/interact")
+async def interact(user_input: str, language: str):
+    response = sdk.run_agent(
+        "language_tutoring_agent",
+        input={"user_input": user_input, "language": language}
+    )
+    return response
+
+
 def main():
     port = int(os.getenv("PORT", "8000")) 
     uvicorn.run("app:app", host="localhost", port=port, reload=True)
