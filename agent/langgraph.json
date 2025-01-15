@@ -1,0 +1,96 @@
+{
+    "graph": {
+      "nodes": [
+        {
+          "id": "START",
+          "name": "Start"
+        },
+        {
+          "id": "detect_intent",
+          "name": "Detect Intent",
+          "type": "function",
+          "function": "detect_intent"
+        },
+        {
+          "id": "recommend_resources",
+          "name": "Recommend Resources",
+          "type": "function",
+          "function": "recommend_resources"
+        },
+        {
+          "id": "provide_tutoring_feedback",
+          "name": "Provide Tutoring Feedback",
+          "type": "function",
+          "function": "provide_tutoring_feedback"
+        },
+        {
+          "id": "end",
+          "name": "End",
+          "type": "terminal"
+        }
+      ],
+      "edges": [
+        {
+          "source": "START",
+          "target": "detect_intent",
+          "condition": null
+        },
+        {
+          "source": "detect_intent",
+          "target": "recommend_resources",
+          "condition": "learn_language"
+        },
+        {
+          "source": "detect_intent",
+          "target": "provide_tutoring_feedback",
+          "condition": "ask_question"
+        },
+        {
+          "source": "recommend_resources",
+          "target": "end",
+          "condition": null
+        },
+        {
+          "source": "recommend_resources",
+          "target": "detect_intent",
+          "condition": "retry"
+        },
+        {
+          "source": "provide_tutoring_feedback",
+          "target": "end",
+          "condition": null
+        },
+        {
+          "source": "provide_tutoring_feedback",
+          "target": "detect_intent",
+          "condition": "retry"
+        }
+      ]
+    },
+    "functions": [
+      {
+        "name": "detect_intent",
+        "description": "Classifies whether the user's intent is to learn a language or ask a question"
+      },
+      {
+        "name": "recommend_resources",
+        "description": "Provides recommended resources for the selected language"
+      },
+      {
+        "name": "provide_tutoring_feedback",
+        "description": "Generates feedback for a user's language-related question"
+      }
+    ],
+    "states": {
+      "TutoringState": {
+        "user_input": "string",
+        "language": "string",
+        "generated_question": "string",
+        "tutoring_feedback": "string",
+        "error": "string",
+        "iterations": "integer",
+        "state_checkpoint_id": "uuid"
+      }
+    }
+  }
+  
